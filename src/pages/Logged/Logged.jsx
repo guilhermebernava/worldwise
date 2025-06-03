@@ -3,95 +3,65 @@ import Logo from "../../components/Logo/Logo";
 import Tab from "../../components/Tab/Tab";
 import UserButton from "../../components/UserButton/UserButton";
 import styles from "./Logged.module.css";
+import { useEffect, useState } from "react";
+import "leaflet/dist/leaflet.css";
+
+import "leaflet/dist/leaflet.css";
+
+import L from "leaflet";
+import markerIcon from "leaflet/dist/images/marker-icon.png";
+import markerShadow from "leaflet/dist/images/marker-shadow.png";
+import { useCities } from "../../context/CitiesContext";
+import { useGeolocation } from "../../hooks/useGeolocation";
+import Map from "../../components/Map/Map";
+
+delete L.Icon.Default.prototype._getIconUrl;
+
+L.Icon.Default.mergeOptions({
+  iconUrl: markerIcon,
+  shadowUrl: markerShadow,
+});
 
 function Logged() {
+  const {
+    isLoading: isLoadingPosition,
+    position: geolocationPosition,
+    getPosition,
+  } = useGeolocation();
+  const [mapPosition, setMapPosition] = useState([40, 0]);
+  const { cities, countries, status } = useCities();
+
+  useEffect(() => {
+    if (geolocationPosition)
+      setMapPosition([geolocationPosition.lat, geolocationPosition.lng]);
+  }, [geolocationPosition]);
+
   return (
-    <div className={styles.main}>
-      <div className={styles.container}>
-        <Logo />
-        <Tab
-          buttons={["Cities", "Countries"]}
-          content={[
-            [
-              {
-                name: "Lisbon",
-                country: "Portugal",
-                date: "2027-10-31T15:59:59.138Z",
-                notes: "My favorite city so far!",
-                position: {
-                  lat: 38.727881642324164,
-                  lng: -9.140900099907554,
-                },
-                id: 73930385,
-              },
-              {
-                name: "Madrid",
-                country: "Spain",
-                date: "2027-07-15T08:22:53.976Z",
-                notes: "",
-                position: {
-                  lat: 40.46635901755316,
-                  lng: -3.7133789062500004,
-                },
-                id: 17806751,
-              },
-              {
-                name: "Berlin",
-                country: "Germany",
-                date: "2027-02-12T09:24:11.863Z",
-                notes: "Amazing 😃",
-                position: {
-                  lat: 52.53586782505711,
-                  lng: 13.376933665713324,
-                },
-                id: 98443197,
-              },
-            ],
-            [
-              {
-                name: "Portugal",
-                emoji: "🇵🇹",
-                date: "2027-10-31T15:59:59.138Z",
-                notes: "My favorite city so far!",
-                position: {
-                  lat: 38.727881642324164,
-                  lng: -9.140900099907554,
-                },
-                id: 73930385,
-              },
-              {
-                name: "Spain",
-                emoji: "🇪🇸",
-                date: "2027-07-15T08:22:53.976Z",
-                notes: "",
-                position: {
-                  lat: 40.46635901755316,
-                  lng: -3.7133789062500004,
-                },
-                id: 17806751,
-              },
-              {
-                name: "Germany",
-                emoji: "🇩🇪",
-                date: "2027-02-12T09:24:11.863Z",
-                notes: "Amazing 😃",
-                position: {
-                  lat: 52.53586782505711,
-                  lng: 13.376933665713324,
-                },
-                id: 98443197,
-              },
-            ],
-          ]}
-        />
-      </div>
-      <div className={styles.map}>
-        <UserButton />
-        <div className={styles.bottom}>
-          <Button text="Use Your Position" />
+    <>
+      {status === "ready" && (
+        <div className={styles.main}>
+          <div className={styles.container}>
+            <Logo />
+            <Tab
+              buttons={["Cities", "Countries"]}
+              content={[cities, countries]}
+            />
+          </div>
+          <div className={styles.map}>
+            <Map mapPosition={mapPosition} />
+            <div className={styles.userButton}>
+              <UserButton />
+            </div>
+            <div className={styles.bottom}>
+              <Button
+                text={isLoadingPosition ? "Loading..." : "Use your position"}
+                onClick={getPosition}
+              />
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 }
 

@@ -23,7 +23,7 @@ function PageNav() {
           </li>
           <li className={styles.navItem}>
             {user != null && (
-              <NavLink to="/logged">
+              <NavLink to="/app/logged">
                 <Button text="USER 123" />
               </NavLink>
             )}

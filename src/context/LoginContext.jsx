@@ -1,45 +1,62 @@
-import { createContext, useCallback, useContext, useState } from "react";
+import { createContext, useCallback, useContext, useReducer } from "react";
 import { useNavigate } from "react-router-dom";
+
+const FAKE_USER = {
+  name: "Jack",
+  photo: "/images/img-1.jpg",
+};
+
+const initialState = {
+  user: FAKE_USER,
+  status: "loading",
+};
 
 const LoginContext = createContext();
 
+function reducer(state, action) {
+  switch (action.type) {
+    case "login":
+      return { ...state, user: action.payload, status: "ready" };
+    case "error":
+      return { ...state, status: "error" };
+    case "logout":
+      return { ...state, user: null };
+    default:
+      return { ...state };
+  }
+}
+
 export function LoginProvider({ children }) {
-  const [user, setUser] = useState({
-    name: "Jack",
-    photo: "images/img-1.jpg",
-  });
-  const [globalError, setGlobalError] = useState("");
+  const [{ user, status }, dispatch] = useReducer(reducer, initialState);
   const navigate = useNavigate();
 
   const login = useCallback(
     (email, password) => {
-      if (user != null) navigate("/logged");
+      if (user != null) navigate("/app/logged");
       if (email.toLowerCase().includes("teste") && password.includes("123")) {
-        setUser({});
-        navigate("/logged");
+        dispatch({
+          type: "login",
+          payload: FAKE_USER,
+        });
+        navigate("/app/logged");
         return;
       }
 
       if (user == null) {
-        setGlobalError("Invalid Email or Password");
-        navigate("/login");
+        dispatch({ type: "error" });
         return;
       }
     },
     [navigate, user]
   );
 
-  const resetGlobalError = () => setGlobalError("");
-
   const logout = () => {
-    setUser(null);
+    dispatch({ type: "logout" });
     navigate("/");
   };
 
   return (
-    <LoginContext.Provider
-      value={{ user, globalError, login, resetGlobalError, logout }}
-    >
+    <LoginContext.Provider value={{ user, status, login, logout }}>
       {children}
     </LoginContext.Provider>
   );

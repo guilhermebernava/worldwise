@@ -1,11 +1,22 @@
-import PageNav from "../../components/PageNav/PageNav";
+import Main from "../../components/Main/Main";
+import Title from "../../components/Title/Title";
 
 function NotFound() {
   return (
-    <div>
-      <PageNav />
-      <h1>Not found any page 404</h1>
-    </div>
+    <Main>
+      <div
+        style={{
+          display: "flex",
+          flexGrow: "1",
+          justifyContent: "center",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Title text="Ops... Not found any page with this URL" />
+        <Title text="🤖" />
+      </div>
+    </Main>
   );
 }
 

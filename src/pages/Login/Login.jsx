@@ -17,7 +17,7 @@ function reducer(state, action) {
 
 function Login() {
   const [error, setError] = useState(false);
-  const { login, globalError } = useLogin();
+  const { login, status } = useLogin();
   const [{ email, password }, dispatch] = useReducer(reducer, initialState);
 
   const handleLogin = () => {
@@ -58,7 +58,7 @@ function Login() {
               })
             }
           />
-          {globalError != "" && <Error text={globalError} />}
+          {status === "error" && <Error text={"Email or Password incorrect"} />}
           <Button text="LOG IN" bigButton={true} onClick={handleLogin} />
         </div>
       </div>

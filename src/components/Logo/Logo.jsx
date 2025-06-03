@@ -8,11 +8,11 @@ function Logo() {
         <source
           className={styles.logo}
           media="(max-width: 670px)"
-          srcSet="images/icon.png"
+          srcSet="/images/icon.png"
         />
         <img
           className={styles.logo}
-          src="images/logo.png"
+          src="/images/logo.png"
           alt="world-wise-logo"
         />
       </picture>
