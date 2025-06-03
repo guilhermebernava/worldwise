@@ -10,6 +10,11 @@
   border: none;
 }
 
+.bigButton {
+  padding: 2.5rem;
+  font-size: 2rem;
+}
+
 .button:hover {
   transform: scale(1.05);
 }

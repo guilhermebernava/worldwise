@@ -1,8 +1,11 @@
 import { NavLink } from "react-router-dom";
 import styles from "./PageNav.module.css";
 import Button from "../Button/Button";
+import { useLogin } from "../../context/LoginContext";
 
 function PageNav() {
+  const { resetGlobalError } = useLogin();
+
   return (
     <nav className={styles.navContainer}>
       <ul className={styles.nav}>
@@ -32,7 +35,7 @@ function PageNav() {
           </li>
           <li className={styles.navItem}>
             <NavLink to="/login">
-              <Button text="LOG IN" />
+              <Button text="LOG IN" onClick={resetGlobalError} />
             </NavLink>
           </li>
         </ul>

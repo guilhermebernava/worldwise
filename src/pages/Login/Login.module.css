@@ -1,0 +1,19 @@
+.content {
+  display: flex;
+  flex-grow: 1;
+  align-self: center;
+  width: 35%;
+}
+
+.box {
+  display: flex;
+  align-self: center;
+  border-radius: 25px;
+  flex-direction: column;
+  padding: 40px;
+  justify-content: center;
+  width: 100%;
+  gap: 25px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  background: var(--color-dark--1);
+}

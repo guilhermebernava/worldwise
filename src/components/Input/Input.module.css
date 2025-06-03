@@ -1,0 +1,39 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.label {
+  font-size: 3rem;
+  font-family: inherit;
+}
+
+.input {
+  border: none;
+  border-radius: 5px;
+  padding: 15px;
+  font-size: 1.5rem;
+  outline: none;
+  background: var(--color-light--2);
+  transition: border-color 0.3s, box-shadow 0.3s, transform 0.5s ease;
+}
+
+input:hover {
+  transform: scale(1.02);
+}
+
+input:focus {
+  border: 2px var(--color-brand--2) solid;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.toggle {
+  font-size: 3rem;
+  position: absolute;
+  right: 10px;
+  top: 77.5%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  user-select: none;
+}
