@@ -1,11 +1,14 @@
 .content {
+  overflow: hidden;
   flex-grow: 1;
   display: flex;
-  height: 100%;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 50px;
+  opacity: 0;
+  transform: translateY(100px);
+  animation: fromY 1s ease forwards;
 }
 
 .title {
@@ -40,5 +43,12 @@
 
   .textContent {
     font-size: 1.5rem;
+  }
+}
+
+@keyframes fromY {
+  to {
+    transform: translateY(0px);
+    opacity: 1;
   }
 }

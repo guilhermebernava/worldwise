@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+
 :root {
   --color-brand--1: #ffb545;
   --color-brand--2: #00c46a;
@@ -30,6 +32,13 @@ body {
 
 ul {
   list-style: none;
+}
+:global {
+  @keyframes fromY {
+    to {
+      transform: translateY(0px);
+    }
+  }
 }
 
 @keyframes shake {

@@ -4,7 +4,10 @@ import { useNavigate } from "react-router-dom";
 const LoginContext = createContext();
 
 export function LoginProvider({ children }) {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState({
+    name: "Jack",
+    photo: "images/img-1.jpg",
+  });
   const [globalError, setGlobalError] = useState("");
   const navigate = useNavigate();
 
@@ -28,9 +31,14 @@ export function LoginProvider({ children }) {
 
   const resetGlobalError = () => setGlobalError("");
 
+  const logout = () => {
+    setUser(null);
+    navigate("/");
+  };
+
   return (
     <LoginContext.Provider
-      value={{ user, globalError, login, resetGlobalError }}
+      value={{ user, globalError, login, resetGlobalError, logout }}
     >
       {children}
     </LoginContext.Provider>

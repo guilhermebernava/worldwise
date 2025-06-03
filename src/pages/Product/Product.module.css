@@ -4,6 +4,8 @@
   gap: 50px;
   justify-content: center;
   align-items: start;
+  transform: translateY(100px);
+  animation: fromY 1s ease forwards;
 }
 
 .contentText {
@@ -11,6 +13,9 @@
   flex-direction: column;
   justify-content: start;
   align-items: start;
+  opacity: 0;
+  transform: translateX(100px);
+  animation: fromX 1s ease forwards 1s;
 }
 
 @media (max-width: 950px) {
@@ -18,5 +23,18 @@
     flex-direction: column-reverse;
     align-items: center;
     justify-content: center;
+  }
+}
+
+@keyframes fromY {
+  to {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes fromX {
+  to {
+    transform: translateX(0px);
+    opacity: 1;
   }
 }

@@ -4,6 +4,7 @@
   justify-content: start;
   width: 100%;
   min-height: 100vh;
+  overflow: hidden;
   background: var(--color-dark--0);
   border: 20px solid white;
 }

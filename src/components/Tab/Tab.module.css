@@ -1,0 +1,100 @@
+.buttons {
+  display: flex;
+  background: var(--color-dark--0);
+  padding: 5px;
+  gap: 5px;
+  border-radius: 5px;
+}
+
+.button:not(:last-child) {
+  border-right: none;
+}
+
+.tabButton {
+  padding: 10px 20px;
+  background: var(--color-dark--0);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.tabButton:hover,
+.closeButton:hover,
+.content:hover {
+  transform: scale(1.05);
+}
+
+.tabButton:active,
+.closeButton:active,
+.content:active:not(:has(button:hover)) {
+  opacity: 0.75;
+}
+
+.closeButton:hover {
+  background: red;
+  font-weight: bold;
+}
+
+.selected {
+  background: var(--color-dark--2);
+}
+
+.tabContent {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  width: 100%;
+}
+
+.content {
+  cursor: pointer;
+  z-index: 1;
+  border-left: 7.5px solid var(--color-brand--2);
+  display: flex;
+  background: var(--color-dark--1);
+  padding: 10px 20px;
+  gap: 15px;
+  width: 100%;
+  border-radius: 5px;
+  font-size: 1.75rem;
+  transition: transform 0.3s ease;
+}
+
+.contentEnd {
+  display: flex;
+  justify-content: end;
+  gap: 25px;
+  flex-grow: 1;
+}
+
+.closeButton {
+  font-size: 1.1rem;
+  width: 30px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  background: var(--color-dark--0);
+  color: white;
+  border-radius: 50%;
+  height: auto;
+  cursor: pointer;
+  z-index: 999;
+}
+
+@media (max-width: 850px) {
+  .tabButton {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 620px) {
+  .content {
+    font-size: 1.25rem;
+  }
+}
