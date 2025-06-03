@@ -20,7 +20,7 @@
   transition: transform 0.5s ease;
 }
 
-.navItem:hover {
+.navItem:hover:not(:has(button:hover)) {
   transform: scale(1.05);
 }
 

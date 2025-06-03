@@ -30,15 +30,23 @@ export function LoginProvider({ children }) {
   const [{ user, status }, dispatch] = useReducer(reducer, initialState);
   const navigate = useNavigate();
 
+  const redirectToLoggedApp = () => {
+    if (user != null) {
+      navigate("/app/logged");
+      return;
+    }
+    navigate("/login");
+  };
+
   const login = useCallback(
     (email, password) => {
-      if (user != null) navigate("/app/logged");
+      setTimeout(() => {}, 2000);
       if (email.toLowerCase().includes("teste") && password.includes("123")) {
         dispatch({
           type: "login",
           payload: FAKE_USER,
         });
-        navigate("/app/logged");
+        redirectToLoggedApp();
         return;
       }
 
@@ -56,7 +64,9 @@ export function LoginProvider({ children }) {
   };
 
   return (
-    <LoginContext.Provider value={{ user, status, login, logout }}>
+    <LoginContext.Provider
+      value={{ user, status, login, logout, redirectToLoggedApp }}
+    >
       {children}
     </LoginContext.Provider>
   );

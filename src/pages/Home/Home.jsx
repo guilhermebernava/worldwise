@@ -2,8 +2,10 @@ import styles from "./Home.module.css";
 import Button from "../../components/Button/Button";
 import Main from "../../components/Main/Main";
 import Title from "../../components/Title/Title";
+import { useLogin } from "../../context/LoginContext";
 
 function Home() {
+  const { redirectToLoggedApp } = useLogin();
   return (
     <Main hasBackgroundImage={true}>
       <div className={styles.content}>
@@ -16,10 +18,7 @@ function Home() {
           you have wandered the world.
         </h2>
 
-        <Button
-          text="START TRACKING NOW"
-          onClick={() => console.log("start tracking")}
-        />
+        <Button text="START TRACKING NOW" onClick={redirectToLoggedApp} />
       </div>
     </Main>
   );

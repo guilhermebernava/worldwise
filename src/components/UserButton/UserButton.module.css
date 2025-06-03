@@ -21,11 +21,24 @@
   padding: 10px;
   border-radius: 10px;
   cursor: pointer;
-  transition: transform 0.5s ease;
+  transition: transform 0.5s ease, background 0.75s ease;
+}
+
+.button.little {
+  font-size: 1.1rem;
+}
+
+.little {
+  font-size: 1.45rem;
+}
+
+.image.little {
+  width: 30px;
 }
 
 .button:hover {
   transform: scale(1.1);
+  background: var(--color-brand--2);
 }
 
 .button:active {

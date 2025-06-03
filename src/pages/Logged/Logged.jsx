@@ -14,6 +14,7 @@ import markerShadow from "leaflet/dist/images/marker-shadow.png";
 import { useCities } from "../../context/CitiesContext";
 import { useGeolocation } from "../../hooks/useGeolocation";
 import Map from "../../components/Map/Map";
+import Spinner from "../../components/Spinner/Spinner";
 
 delete L.Icon.Default.prototype._getIconUrl;
 
@@ -38,6 +39,7 @@ function Logged() {
 
   return (
     <>
+      {status === "loading" && <Spinner />}
       {status === "ready" && (
         <div className={styles.main}>
           <div className={styles.container}>

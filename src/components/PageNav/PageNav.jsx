@@ -3,6 +3,7 @@ import styles from "./PageNav.module.css";
 import Button from "../Button/Button";
 import { useLogin } from "../../context/LoginContext";
 import Logo from "../Logo/Logo";
+import UserButton from "../UserButton/UserButton";
 
 function PageNav() {
   const { resetGlobalError, user } = useLogin();
@@ -24,7 +25,7 @@ function PageNav() {
           <li className={styles.navItem}>
             {user != null && (
               <NavLink to="/app/logged">
-                <Button text="USER 123" />
+                <UserButton isLittle={true} />
               </NavLink>
             )}
 

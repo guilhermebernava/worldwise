@@ -4,8 +4,10 @@ import styles from "./Pricing.module.css";
 import Title from "../../components/Title/Title";
 import Paragraph from "../../components/Paragraph/Paragraph";
 import Button from "../../components/Button/Button";
+import { useLogin } from "../../context/LoginContext";
 
 function Pricing() {
+  const { redirectToLoggedApp } = useLogin();
   return (
     <Main>
       <div className={styles.content}>
@@ -27,10 +29,7 @@ function Pricing() {
             necessitatibus nemo pariatur corrupti."
           />
 
-          <Button
-            text="START TRACKING NOW"
-            onClick={() => console.log("start tracking")}
-          />
+          <Button text="START TRACKING NOW" onClick={redirectToLoggedApp} />
         </div>
       </div>
     </Main>

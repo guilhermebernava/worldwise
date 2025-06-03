@@ -90,8 +90,10 @@ export function CitiesProvider({ children }) {
       }
     }
 
-    fetchCities();
-    fetchCountries();
+    setTimeout(() => {
+      fetchCities();
+      fetchCountries();
+    }, 2500);
   }, []);
 
   const getCityInfo = useCallback(async (lat, lng) => {
@@ -99,31 +101,33 @@ export function CitiesProvider({ children }) {
     const res = await fetch(
       `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`
     );
-    const data = await res.json();
 
-    const city =
-      data.address.city ||
-      data.address.town ||
-      data.address.village ||
-      "Unknown";
-    const country = data.address.country || "Unknown";
-    console.log(data);
-    const countryCode = data.address.country_code?.toUpperCase() || "";
+    setTimeout(() => {
+      const city =
+        data.address.city ||
+        data.address.town ||
+        data.address.village ||
+        "Unknown";
+      const country = data.address.country || "Unknown";
+      console.log(data);
+      const countryCode = data.address.country_code?.toUpperCase() || "";
 
-    dispatch({
-      type: "cities/added",
-      payload: {
-        name: city,
-        id: Date.now(),
-        date: new Date().toISOString(),
-        country: country,
-        emoji: countryCode,
-        position: {
-          lat: lat,
-          lng: lng,
+      dispatch({
+        type: "cities/added",
+        payload: {
+          name: city,
+          id: Date.now(),
+          date: new Date().toISOString(),
+          country: country,
+          emoji: countryCode,
+          position: {
+            lat: lat,
+            lng: lng,
+          },
         },
-      },
-    });
+      });
+    }, 2000);
+    const data = await res.json();
   }, []);
 
   return (
