@@ -5,10 +5,6 @@
   list-style: none;
   padding: 20px;
 }
-.logo {
-  width: 200px;
-  height: auto;
-}
 
 .navItens {
   display: flex;
@@ -38,9 +34,6 @@
 }
 
 @media (max-width: 670px) {
-  .logo {
-    width: 47.5px;
-  }
   .navItens {
     gap: 25px;
   }

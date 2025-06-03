@@ -9,7 +9,7 @@ function Product() {
     <Main flexDirection="row">
       <div className={styles.content}>
         <Image src="images/img-1.jpg" alt="man-in-the-wild" />
-        <div>
+        <div className={styles.contentText}>
           <Title text="About World Wide" />
           <Paragraph
             text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi,

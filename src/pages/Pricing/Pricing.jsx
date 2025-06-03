@@ -11,7 +11,7 @@ function Pricing() {
       <div className={styles.content}>
         <Image src="images/img-2.jpg" alt="city" />
         <div className={styles.textContent}>
-          <div>
+          <div className={styles.title}>
             <Title text="Simple Pricing." />
             <Title text="Just $9 a month." />
           </div>

@@ -10,14 +10,14 @@ export function LoginProvider({ children }) {
 
   const login = useCallback(
     (email, password) => {
-      debugger;
-      if (email.includes("teste") && password.includes("123")) {
+      if (user != null) navigate("/logged");
+      if (email.toLowerCase().includes("teste") && password.includes("123")) {
+        setUser({});
         navigate("/logged");
         return;
       }
 
       if (user == null) {
-        setUser({});
         setGlobalError("Invalid Email or Password");
         navigate("/login");
         return;
