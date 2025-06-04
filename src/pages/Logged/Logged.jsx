@@ -3,7 +3,7 @@ import Logo from "../../components/Logo/Logo";
 import Tab from "../../components/Tab/Tab";
 import UserButton from "../../components/UserButton/UserButton";
 import styles from "./Logged.module.css";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import "leaflet/dist/leaflet.css";
 
 import "leaflet/dist/leaflet.css";
@@ -15,6 +15,7 @@ import { useCities } from "../../context/CitiesContext";
 import { useGeolocation } from "../../hooks/useGeolocation";
 import Map from "../../components/Map/Map";
 import Spinner from "../../components/Spinner/Spinner";
+import FormModal from "../../components/FormModal/FormModal";
 
 delete L.Icon.Default.prototype._getIconUrl;
 
@@ -29,19 +30,33 @@ function Logged() {
     position: geolocationPosition,
     getPosition,
   } = useGeolocation();
-  const [mapPosition, setMapPosition] = useState([40, 0]);
+
+  const modalDataRef = useRef(null);
+  const [isOpen, setIsOpen] = useState(false);
   const { cities, countries, status } = useCities();
 
   useEffect(() => {
-    if (geolocationPosition)
-      setMapPosition([geolocationPosition.lat, geolocationPosition.lng]);
+    if (geolocationPosition) {
+      modalDataRef.current = {
+        lat: geolocationPosition.lat,
+        lng: geolocationPosition.lng,
+      };
+      setIsOpen(true);
+    }
   }, [geolocationPosition]);
 
   return (
     <>
+      {status === "error" && <h1>Error</h1>}
       {status === "loading" && <Spinner />}
       {status === "ready" && (
         <div className={styles.main}>
+          <FormModal
+            isOpen={isOpen}
+            onClose={() => setIsOpen((x) => !x)}
+            position={modalDataRef.current}
+            setIsOpen={setIsOpen}
+          />
           <div className={styles.container}>
             <Logo />
             <Tab
@@ -50,14 +65,21 @@ function Logged() {
             />
           </div>
           <div className={styles.map}>
-            <Map mapPosition={mapPosition} />
+            <Map
+              onSelectedPosition={(pos) => {
+                modalDataRef.current = { lat: pos.lat, lng: pos.lng };
+                setIsOpen(true);
+              }}
+            />
             <div className={styles.userButton}>
               <UserButton />
             </div>
             <div className={styles.bottom}>
               <Button
                 text={isLoadingPosition ? "Loading..." : "Use your position"}
-                onClick={getPosition}
+                onClick={() => {
+                  getPosition();
+                }}
               />
             </div>
           </div>

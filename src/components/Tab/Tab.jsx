@@ -1,18 +1,13 @@
 import { useState } from "react";
 import styles from "./Tab.module.css";
 import FlagEmoji from "../FlagEmoji/FlagEmoji";
+import { useCities } from "../../context/CitiesContext";
 
 function Tab({ buttons = [], content = [] }) {
+  const { deleteCity } = useCities();
+
   if (buttons.lenght != content.lenght)
     throw new Error("BUTTONS and CONTENT MUST HAVE THE SAME SIZE");
-
-  function countryCodeToFlagEmoji(countryCode) {
-    const codePoints = countryCode
-      .toUpperCase()
-      .split("")
-      .map((char) => 127397 + char.charCodeAt());
-    return String.fromCodePoint(...codePoints);
-  }
 
   const [tab, setTab] = useState(0);
 
@@ -54,7 +49,7 @@ function Tab({ buttons = [], content = [] }) {
                 <button
                   className={styles.closeButton}
                   onClick={(e) => {
-                    console.log("close");
+                    deleteCity(content.id);
                     e.stopPropagation();
                   }}
                 >

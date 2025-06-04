@@ -28,6 +28,10 @@
   transform: scale(1.05);
 }
 
+.content:hover:not(:has(button:hover)) {
+  background: var(--color-brand--2);
+}
+
 .tabButton:active,
 .closeButton:active,
 .content:active:not(:has(button:hover)) {
@@ -96,5 +100,10 @@
 @media (max-width: 620px) {
   .content {
     font-size: 1.25rem;
+  }
+
+  .closeButton {
+    font-size: 1rem;
+    width: 22.5px;
   }
 }

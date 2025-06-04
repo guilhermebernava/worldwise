@@ -1,0 +1,74 @@
+.container {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  min-height: 100vh;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 10px;
+}
+
+.label {
+  font-size: 2rem;
+  font-family: inherit;
+}
+
+.input {
+  width: 100%;
+  padding: 10px 20px;
+  font-size: 1.5rem;
+  font-family: inherit;
+  outline: none;
+}
+
+.form {
+  width: 50%;
+  height: 100%;
+  position: relative;
+  padding: 60px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  background: var(--color-dark--0);
+}
+
+.closeButton {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  border: none;
+  width: 30px;
+  border-radius: 50%;
+  color: white;
+  background: red;
+  cursor: pointer;
+  transition: transform 0.5s ease;
+  top: 15px;
+  right: 15px;
+}
+
+.closeButton:hover {
+  transform: scale(1.2);
+}
+
+@media (max-width: 1400px) {
+  .container,
+  .map {
+    width: 100%;
+    min-height: 100vh;
+  }
+}

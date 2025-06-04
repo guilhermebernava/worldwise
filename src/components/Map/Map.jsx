@@ -13,7 +13,6 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
-import { useState } from "react";
 import { useCities } from "../../context/CitiesContext";
 
 delete L.Icon.Default.prototype._getIconUrl;
@@ -23,26 +22,20 @@ L.Icon.Default.mergeOptions({
   shadowUrl: markerShadow,
 });
 
-function Map({ mapPosition }) {
-  const { cities, status, getCityInfo } = useCities();
-  const [localMarkers, setLocalMarkers] = useState(() => {
-    const markers = cities.map((city) => {
-      return {
-        lat: city.position.lat,
-        lng: city.position.lng,
-      };
-    });
+function Map({ onSelectedPosition }) {
+  const { cities, lastCity } = useCities();
 
-    return markers;
-  });
-
-  async function handleAddMarker(latlng) {
-    setLocalMarkers((prev) => [...prev, { lat: latlng.lat, lng: latlng.lng }]);
+  function handleAddMarker(latlng) {
+    onSelectedPosition(latlng);
   }
+
+  let lastCityPosition;
+  if (lastCity == null) lastCityPosition = [40, 0];
+  else lastCityPosition = [lastCity.position.lat, lastCity.position.lng];
 
   return (
     <MapContainer
-      center={mapPosition}
+      center={lastCityPosition}
       zoom={6}
       scrollWheelZoom={true}
       className={styles.wordMap}
@@ -51,12 +44,16 @@ function Map({ mapPosition }) {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      {localMarkers.map((city) => (
-        <Marker position={[city.lat, city.lng]} key={city.id}>
-          {/* <Popup>
-            <span style={{ fontFamily: "Noto Color Emoji" }}>{city.emoji}</span>
-            <span>{city.cityName}</span>
-          </Popup> */}
+      {cities.map((city) => (
+        <Marker position={[city.position.lat, city.position.lng]} key={city.id}>
+          <Popup>
+            {city.emoji != null && (
+              <span style={{ fontFamily: "Noto Color Emoji" }}>
+                {city.emoji}
+              </span>
+            )}
+            <span>{city.name}</span>
+          </Popup>
         </Marker>
       ))}
       <AddMarkerOnClick onAddMarker={handleAddMarker} />

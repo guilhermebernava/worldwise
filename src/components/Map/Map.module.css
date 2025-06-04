@@ -1,6 +1,7 @@
 .wordMap {
   height: 100%;
   width: 100%;
+  min-height: 660px;
 }
 
 :global(.leaflet-popup .leaflet-popup-content-wrapper) {

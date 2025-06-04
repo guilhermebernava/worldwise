@@ -10,19 +10,22 @@ export function useGeolocation(defaultPosition = null) {
       return setError("Your browser does not support geolocation");
 
     setIsLoading(true);
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        setPosition({
-          lat: pos.coords.latitude,
-          lng: pos.coords.longitude,
-        });
-        setIsLoading(false);
-      },
-      (error) => {
-        setError(error.message);
-        setIsLoading(false);
-      }
-    );
+
+    setTimeout(() => {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          setPosition({
+            lat: pos.coords.latitude,
+            lng: pos.coords.longitude,
+          });
+          setIsLoading(false);
+        },
+        (error) => {
+          setError(error.message);
+          setIsLoading(false);
+        }
+      );
+    }, 2000);
   }
 
   return { isLoading, position, error, getPosition };
