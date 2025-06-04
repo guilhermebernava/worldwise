@@ -12,8 +12,8 @@ import markerShadow from "leaflet/dist/images/marker-shadow.png";
 import { useCities } from "../../context/CitiesContext";
 import { useGeolocation } from "../../hooks/useGeolocation";
 import Map from "../../components/Map/Map";
-import ErrorPage from "../Error/ErrorPage";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import ErrorPopup from "../../components/ErrorPopUp/ErrorPopUp";
 
 delete L.Icon.Default.prototype._getIconUrl;
 
@@ -33,7 +33,7 @@ function Logged() {
   const location = useLocation();
 
   const modalDataRef = useRef(null);
-  const { status } = useCities();
+  const { status, error, resetError } = useCities();
   const showModal = location.pathname.includes("/formModal");
 
   useEffect(() => {
@@ -52,11 +52,12 @@ function Logged() {
 
   return (
     <>
-      {status === "error" && (
-        <ErrorPage error={"Error while fecthing data from API"} />
-      )}
-      {showModal && <Outlet />}
+      {showModal && <Outlet />}{" "}
       <div className={styles.main}>
+        {status === "error" && error && (
+          <ErrorPopup message={error} onClose={resetError} />
+        )}
+
         <div className={styles.container}>
           <Logo />
           <Tab />

@@ -21,7 +21,7 @@ const initialState = {
   cities: [],
   status: "loading",
   position: {
-    lat: 0,
+    lat: 40,
     lng: 0,
   },
   error: null,
@@ -53,9 +53,14 @@ function reducer(state, action) {
       const newCities = state.cities.filter(
         (city) => city.id !== action.payload
       );
-      return { ...state, cities: [...newCities] };
+      return {
+        ...state,
+        cities: [...newCities],
+        position: initialState.position,
+        status: "ready",
+      };
     case "ready":
-      return { ...state, status: "ready" };
+      return { ...state, status: "ready", error: null };
     case "setPosition":
       return { ...state, position: action.payload };
     default:
@@ -105,6 +110,14 @@ export function CitiesProvider({ children }) {
       );
       const data = await res.json();
 
+      if (data?.error != null) {
+        dispatch({
+          type: "error",
+          payload: "Error in getting informations about the city selected",
+        });
+        return;
+      }
+
       const city =
         data.address.city ||
         data.address.town ||
@@ -132,28 +145,61 @@ export function CitiesProvider({ children }) {
     dispatch({ type: "loading" });
 
     await setTimeout(async () => {
-      var country = await getCityInfo(data.lat, data.lng);
+      var infoData = await getCityInfo(data.lat, data.lng);
 
-      if (country == null) {
-        dispatch({ type: "error" });
-        return;
-      }
-
-      dispatch({
-        type: "cities/added",
-        payload: {
-          ...country,
+      if (infoData != null) {
+        const newCity = {
+          ...infoData,
           cityName: data.name,
           name: data.name,
           date: data.date,
           notes: data.notes,
-        },
-      });
+        };
+
+        try {
+          await fetch(`${BASE_URL}/cities`, {
+            method: "POST",
+            body: JSON.stringify(newCity),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+
+          dispatch({
+            type: "cities/added",
+            payload: newCity,
+          });
+        } catch {
+          dispatch({
+            type: "error",
+            payload: "There was an error creating the city...",
+          });
+        }
+      }
     }, 2000);
   };
 
-  const deleteCity = (id) => {
-    dispatch({ type: "cities/delete", payload: id });
+  const deleteCity = async (id) => {
+    debugger;
+    dispatch({ type: "loading" });
+    try {
+      const res = await fetch(`${BASE_URL}/cities/${Number(id)}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (res.status != 200) {
+        dispatch({
+          type: "error",
+          payload: "There was an error deleting the city...",
+        });
+        return;
+      }
+
+      dispatch({ type: "cities/delete", payload: id });
+    } catch {}
   };
 
   const getCityById = useCallback(
@@ -175,6 +221,10 @@ export function CitiesProvider({ children }) {
     [cities]
   );
 
+  const resetError = () => {
+    dispatch({ type: "ready" });
+  };
+
   return (
     <CitiesContext.Provider
       value={{
@@ -186,6 +236,7 @@ export function CitiesProvider({ children }) {
         addCity,
         deleteCity,
         getCityById,
+        resetError,
       }}
     >
       {children}

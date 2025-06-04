@@ -48,7 +48,13 @@ function FormModal() {
   };
 
   return (
-    <div className={styles.container}>
+    <form
+      className={styles.container}
+      onSubmit={async (e) => {
+        e.preventDefault();
+        await handleAddCity();
+      }}
+    >
       <div className={styles.form}>
         <button
           className={styles.closeButton}
@@ -99,12 +105,9 @@ function FormModal() {
         <Button
           text={`${status === "loading" ? "Loading" : "Add City"}`}
           bigButton={true}
-          onClick={async () => {
-            await handleAddCity();
-          }}
         />
       </div>
-    </div>
+    </form>
   );
 }
 

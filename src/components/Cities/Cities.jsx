@@ -41,9 +41,9 @@ function Cities() {
               </span>
               <button
                 className={styles.closeButton}
-                onClick={(e) => {
-                  deleteCity(content.id);
+                onClick={async (e) => {
                   e.stopPropagation();
+                  await deleteCity(content.id);
                 }}
               >
                 X
