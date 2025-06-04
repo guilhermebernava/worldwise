@@ -65,9 +65,9 @@
   transform: scale(1.2);
 }
 
-@media (max-width: 1400px) {
+@media (max-width: 1000px) {
   .container,
-  .map {
+  .form {
     width: 100%;
     min-height: 100vh;
   }

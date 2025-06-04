@@ -1,9 +1,11 @@
 import styles from "./FormModal.module.css";
 import Input from "../Input/Input";
-import { useEffect, useReducer } from "react";
 import Textarea from "../Textarea/Textarea";
 import Button from "../Button/Button";
+import { useReducer } from "react";
 import { useCities } from "../../context/CitiesContext";
+import { useNavigate, useParams } from "react-router-dom";
+import Error from "../Error/Error";
 
 const initialState = {
   name: "",
@@ -15,8 +17,6 @@ function reducer(state, action) {
   switch (action.type) {
     case "onChange":
       return { ...state, [action.payload.name]: action.payload.value };
-    case "addPosition":
-      return { ...state, position: action.payload };
     case "reset":
       return initialState;
     default:
@@ -24,20 +24,14 @@ function reducer(state, action) {
   }
 }
 
-function FormModal({ isOpen, onClose, position = null, setIsOpen }) {
+function FormModal() {
+  const { lat, lng } = useParams();
   const [{ name, date, notes }, dispatch] = useReducer(reducer, initialState);
-  const { addCity } = useCities();
-
-  useEffect(() => {
-    const handleEsc = (event) => {
-      if (event.key === "Escape") onClose();
-    };
-    document.addEventListener("keydown", handleEsc);
-    return () => document.removeEventListener("keydown", handleEsc);
-  }, [onClose]);
+  const navigate = useNavigate();
+  const { addCity, status } = useCities();
 
   const handleAddCity = async () => {
-    if (!name || !date || !notes || position == null) {
+    if (!name || !date || !notes || lat == null || lng == null) {
       return;
     }
 
@@ -45,15 +39,14 @@ function FormModal({ isOpen, onClose, position = null, setIsOpen }) {
       name,
       date,
       notes,
-      lat: position.lat,
-      lng: position.lng,
+      lat: Number(lat),
+      lng: Number(lng),
     });
 
     dispatch({ type: "reset" });
-    setIsOpen(false);
+    navigate("/app/logged");
   };
 
-  if (!isOpen) return null;
   return (
     <div className={styles.container}>
       <div className={styles.form}>
@@ -63,7 +56,7 @@ function FormModal({ isOpen, onClose, position = null, setIsOpen }) {
             e.preventDefault();
             e.stopPropagation();
             dispatch({ type: "reset" });
-            onClose();
+            navigate("/app/logged");
           }}
         >
           X
@@ -102,8 +95,9 @@ function FormModal({ isOpen, onClose, position = null, setIsOpen }) {
           }
           label="Notes about your trip"
         />
+        {status === "error" && <Error text="Error in fetching data from API" />}
         <Button
-          text="Add City"
+          text={`${status === "loading" ? "loading" : "Add City"}`}
           bigButton={true}
           onClick={async () => {
             await handleAddCity();

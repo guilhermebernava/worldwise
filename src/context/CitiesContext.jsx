@@ -8,6 +8,14 @@ import {
 
 const BASE_URL = "http://localhost:9000";
 
+function countryCodeToFlagEmoji(countryCode) {
+  return countryCode
+    .toUpperCase()
+    .split("")
+    .map((char) => String.fromCodePoint(char.charCodeAt() + 127397))
+    .join("");
+}
+
 const CitiesContext = createContext();
 const initialState = {
   cities: [],
@@ -112,7 +120,6 @@ export function CitiesProvider({ children }) {
   }, []);
 
   const getCityInfo = useCallback(async (lat, lng) => {
-    dispatch({ type: "loading" });
     try {
       const res = await fetch(
         `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`
@@ -131,7 +138,7 @@ export function CitiesProvider({ children }) {
         name: city,
         id: Date.now(),
         country: country,
-        emoji: countryCode,
+        emoji: countryCodeToFlagEmoji(countryCode),
         position: {
           lat: lat,
           lng: lng,
@@ -143,40 +150,54 @@ export function CitiesProvider({ children }) {
   }, []);
 
   const addCity = async (data) => {
-    dispatch({
-      type: "cities/added",
-      payload: {
-        cityName: data.name,
-        name: data.name,
-        id: Date.now(),
-        date: data.date,
-        notes: data.notes,
-        position: {
-          lat: data.lat,
-          lng: data.lng,
+    dispatch({ type: "loading" });
+
+    await setTimeout(async () => {
+      var country = await getCityInfo(data.lat, data.lng);
+
+      if (country == null) {
+        dispatch({ type: "error" });
+        return;
+      }
+
+      dispatch({
+        type: "cities/added",
+        payload: {
+          cityName: data.name,
+          name: data.name,
+          id: Date.now(),
+          date: data.date,
+          notes: data.notes,
+          emoji: country.emoji,
+          position: {
+            lat: data.lat,
+            lng: data.lng,
+          },
         },
-      },
-    });
+      });
 
-    var country = await getCityInfo(data.lat, data.ln);
-
-    if (country == null) {
-      dispatch({ type: "error" });
-      return;
-    }
-
-    dispatch({
-      type: "countries/added",
-      payload: {
-        ...country,
-        date: data.date,
-        notes: data.notes,
-      },
-    });
+      dispatch({
+        type: "countries/added",
+        payload: {
+          ...country,
+          name: country.country,
+          date: data.date,
+          notes: data.notes,
+        },
+      });
+    }, 2000);
   };
 
   const deleteCity = (id) => {
     dispatch({ type: "cities/delete", payload: id });
+  };
+
+  const getCityById = (id) => {
+    const city = cities.filter((city) => city.id === id)[0];
+
+    if (city != null) return city;
+
+    throw new Error("Not found any city with this ID");
   };
 
   return (
@@ -190,6 +211,7 @@ export function CitiesProvider({ children }) {
         getCityInfo,
         addCity,
         deleteCity,
+        getCityById,
       }}
     >
       {children}

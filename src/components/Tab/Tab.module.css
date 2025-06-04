@@ -22,8 +22,8 @@
   font-weight: bold;
 }
 
-.tabButton:hover,
-.closeButton:hover,
+.tabButton:hover:not(:disabled),
+.closeButton:hover:not(:disabled),
 .content:hover {
   transform: scale(1.05);
 }
@@ -32,10 +32,16 @@
   background: var(--color-brand--2);
 }
 
-.tabButton:active,
-.closeButton:active,
+.tabButton:active:not(:disabled),
+.closeButton:active:not(:disabled),
 .content:active:not(:has(button:hover)) {
   opacity: 0.75;
+}
+
+.tabButton:disabled,
+.closeButton:disabled {
+  opacity: 0.25;
+  cursor: auto;
 }
 
 .closeButton:hover {

@@ -9,6 +9,8 @@ import Form from "./components/Form/Form";
 import ProtectedRoute from "./pages/ProtectedRoute";
 import { CitiesProvider } from "./context/CitiesContext";
 import "./App.css";
+import FormModal from "./components/FormModal/FormModal";
+import City from "./components/City/City";
 
 function App() {
   return (
@@ -28,7 +30,10 @@ function App() {
               </CitiesProvider>
             </ProtectedRoute>
           }
-        />
+        >
+          <Route path="formModal/:lat/:lng" element={<FormModal />} />
+          <Route path="city/:id" element={<City />} />
+        </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>

@@ -2,9 +2,14 @@ import { useState } from "react";
 import styles from "./Tab.module.css";
 import FlagEmoji from "../FlagEmoji/FlagEmoji";
 import { useCities } from "../../context/CitiesContext";
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
+import { formatDateToMMDDYYYY } from "../../helpers/DateHelper";
 
 function Tab({ buttons = [], content = [] }) {
   const { deleteCity } = useCities();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const showOutlet = location.pathname.includes("/city");
 
   if (buttons.lenght != content.lenght)
     throw new Error("BUTTONS and CONTENT MUST HAVE THE SAME SIZE");
@@ -24,7 +29,7 @@ function Tab({ buttons = [], content = [] }) {
                 index === buttons.length - 1 ? styles.last : ""
               }`}
               onClick={() => setTab(index)}
-              disabled={tab === index}
+              disabled={showOutlet}
             >
               {button.toUpperCase()}
             </button>
@@ -32,12 +37,14 @@ function Tab({ buttons = [], content = [] }) {
         </div>
       </div>
       <div className={styles.tabContent}>
+        {showOutlet && <Outlet />}
         {content.length > 0 &&
+          !showOutlet &&
           content[tab].map((content, index) => (
             <div
               className={styles.content}
               key={index}
-              onClick={() => console.log(content)}
+              onClick={() => navigate(`city/${content.id}`)}
             >
               {content.emoji != null && (
                 <FlagEmoji countryCode={content.emoji} />
@@ -45,7 +52,9 @@ function Tab({ buttons = [], content = [] }) {
 
               <span className={styles.contentText}>{content.name}</span>
               <section className={styles.contentEnd}>
-                <span className={styles.contentText}>({content.date})</span>
+                <span className={styles.contentText}>
+                  ({formatDateToMMDDYYYY(content.date)})
+                </span>
                 <button
                   className={styles.closeButton}
                   onClick={(e) => {

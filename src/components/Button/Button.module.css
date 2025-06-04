@@ -15,10 +15,14 @@
   font-size: 2rem;
 }
 
-.button:hover {
+.button:hover:not(:disabled) {
   transform: scale(1.05);
 }
 
-.button:active {
+.button:active:not(:disabled) {
   opacity: 0.75;
+}
+
+.buton:disabled {
+  cursor: auto;
 }
