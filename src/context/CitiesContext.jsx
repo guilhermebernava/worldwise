@@ -19,7 +19,6 @@ function countryCodeToFlagEmoji(countryCode) {
 const CitiesContext = createContext();
 const initialState = {
   cities: [],
-  countries: [],
   status: "loading",
   error: null,
 };
@@ -29,24 +28,16 @@ function reducer(state, action) {
     case "login":
       return { ...state, user: action.payload, status: "ready" };
     case "error":
-      return { ...state, status: "error" };
+      return { ...state, status: "error", error: action.payload };
     case "loading":
       return { ...state, status: "loading" };
     case "cities/loaded":
       return { ...state, status: "ready", cities: action.payload };
-    case "countries/loaded":
-      return { ...state, status: "ready", countries: action.payload };
     case "cities/added":
       return {
         ...state,
         status: "ready",
         cities: [...state.cities, action.payload],
-      };
-    case "countries/added":
-      return {
-        ...state,
-        status: "ready",
-        countries: [...state.countries, action.payload],
       };
     case "cities/delete":
       const newCities = state.cities.filter(
@@ -59,7 +50,7 @@ function reducer(state, action) {
 }
 
 export function CitiesProvider({ children }) {
-  const [{ cities, status, countries, error }, dispatch] = useReducer(
+  const [{ cities, status, error }, dispatch] = useReducer(
     reducer,
     initialState
   );
@@ -88,34 +79,8 @@ export function CitiesProvider({ children }) {
       }
     }
 
-    async function fetchCountries() {
-      dispatch({ type: "loading" });
-
-      try {
-        const res = await fetch(`${BASE_URL}/cities`);
-        const data = await res.json();
-
-        const mappedData = data.map((item) => {
-          return {
-            ...item,
-            name: item.country,
-          };
-        });
-
-        console.log(mappedData);
-
-        dispatch({ type: "countries/loaded", payload: mappedData });
-      } catch {
-        dispatch({
-          type: "error",
-          payload: "There was an error loading cities...",
-        });
-      }
-    }
-
     setTimeout(() => {
       fetchCities();
-      fetchCountries();
     }, 2500);
   }, []);
 
@@ -163,24 +128,9 @@ export function CitiesProvider({ children }) {
       dispatch({
         type: "cities/added",
         payload: {
+          ...country,
           cityName: data.name,
           name: data.name,
-          id: Number(Date.now()),
-          date: data.date,
-          notes: data.notes,
-          emoji: country.emoji,
-          position: {
-            lat: data.lat,
-            lng: data.lng,
-          },
-        },
-      });
-
-      dispatch({
-        type: "countries/added",
-        payload: {
-          ...country,
-          name: country.country,
           date: data.date,
           notes: data.notes,
         },
@@ -206,7 +156,6 @@ export function CitiesProvider({ children }) {
       value={{
         cities,
         status,
-        countries,
         error,
         lastCity: cities[cities.length - 1],
         getCityInfo,

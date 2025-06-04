@@ -39,7 +39,7 @@
   animation: fromY 1s ease forwards;
 }
 
-.tabContent {
+.container {
   display: flex;
   flex-direction: column;
   gap: 25px;
@@ -67,12 +67,6 @@
   height: auto;
   cursor: pointer;
   z-index: 999;
-}
-
-@media (max-width: 850px) {
-  .tabButton {
-    font-size: 1rem;
-  }
 }
 
 @media (max-width: 620px) {

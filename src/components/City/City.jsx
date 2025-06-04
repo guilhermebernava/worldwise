@@ -7,8 +7,10 @@ import { formatDateToMMDDYYYY } from "../../helpers/DateHelper";
 
 function City() {
   const { getCityById } = useCities();
+  //serve para pegar PARAMETROS passados na rota
   const { id } = useParams();
   const [city, setCity] = useState();
+  //Serve para navegar entre as rotas
   const navite = useNavigate();
 
   function getWikipediaUrl(cityName) {

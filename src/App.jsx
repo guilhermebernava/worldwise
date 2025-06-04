@@ -5,13 +5,13 @@ import NotFound from "./pages/NotFound/NotFound";
 import Pricing from "./pages/Pricing/Pricing";
 import Login from "./pages/Login/Login";
 import Logged from "./pages/Logged/Logged";
-import Form from "./components/Form/Form";
 import Cities from "./components/Cities/Cities";
 import ProtectedRoute from "./pages/ProtectedRoute";
 import { CitiesProvider } from "./context/CitiesContext";
 import "./App.css";
 import FormModal from "./components/FormModal/FormModal";
 import City from "./components/City/City";
+import Countries from "./components/Countries/Countries";
 
 function App() {
   return (
@@ -21,7 +21,6 @@ function App() {
         <Route path="product" element={<Product />} />
         <Route path="pricing" element={<Pricing />} />
         <Route path="login" element={<Login />} />
-        <Route path="form" element={<Form />} />
         <Route
           path="app"
           element={
@@ -36,7 +35,7 @@ function App() {
           <Route path="cities" element={<Cities />}>
             <Route path="city/:id" element={<City />} />
           </Route>
-          <Route path="countries" element={<div>teste c</div>} />
+          <Route path="countries" element={<Countries />} />
           <Route path="formModal/:lat/:lng" element={<FormModal />} />
         </Route>
         <Route path="*" element={<NotFound />} />

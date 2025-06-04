@@ -47,7 +47,8 @@ function Logged() {
       };
 
       navigate(
-        `formModal/${modalDataRef.current.lat}/${modalDataRef.current.lng}`
+        `formModal/${modalDataRef.current.lat}/${modalDataRef.current.lng}`,
+        { state: { background: location } }
       );
     }
   }, [geolocationPosition]);
@@ -71,7 +72,8 @@ function Logged() {
               onSelectedPosition={(pos) => {
                 modalDataRef.current = { lat: pos.lat, lng: pos.lng };
                 navigate(
-                  `formModal/${modalDataRef.current.lat}/${modalDataRef.current.lng}`
+                  `formModal/${modalDataRef.current.lat}/${modalDataRef.current.lng}`,
+                  { state: { background: location } }
                 );
               }}
             />

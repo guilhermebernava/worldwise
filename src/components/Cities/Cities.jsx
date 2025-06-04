@@ -5,13 +5,14 @@ import FlagEmoji from "../FlagEmoji/FlagEmoji";
 import styles from "./Cities.module.css";
 
 function Cities() {
+  //serve para pegar a URL ATUAL.
   const location = useLocation();
   const { cities, deleteCity } = useCities();
   const navigate = useNavigate();
-
   const showOutlet = location.pathname.includes("/city");
+
   return (
-    <div className={styles.tabContent}>
+    <div className={styles.container}>
       {showOutlet && <Outlet />}
       {cities.length == 0 && !showOutlet && (
         <Title
@@ -21,10 +22,10 @@ function Cities() {
       )}
       {cities.length > 0 &&
         !showOutlet &&
-        cities.map((content, index) => (
+        cities.map((content) => (
           <div
             className={styles.content}
-            key={index}
+            key={content.id}
             onClick={() => navigate(`city/${content.id}`)}
           >
             {content.emoji != null && <FlagEmoji countryCode={content.emoji} />}
