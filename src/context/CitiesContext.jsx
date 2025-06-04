@@ -136,7 +136,7 @@ export function CitiesProvider({ children }) {
 
       return {
         name: city,
-        id: Date.now(),
+        id: Number(Date.now()),
         country: country,
         emoji: countryCodeToFlagEmoji(countryCode),
         position: {
@@ -165,7 +165,7 @@ export function CitiesProvider({ children }) {
         payload: {
           cityName: data.name,
           name: data.name,
-          id: Date.now(),
+          id: Number(Date.now()),
           date: data.date,
           notes: data.notes,
           emoji: country.emoji,
@@ -193,9 +193,10 @@ export function CitiesProvider({ children }) {
   };
 
   const getCityById = (id) => {
-    const city = cities.filter((city) => city.id === id)[0];
+    debugger;
+    const city = cities.filter((city) => city.id === Number(id));
 
-    if (city != null) return city;
+    if (city != null) return city[0];
 
     throw new Error("Not found any city with this ID");
   };

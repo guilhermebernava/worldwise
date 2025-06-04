@@ -1,0 +1,50 @@
+.buttons {
+  display: flex;
+  background: var(--color-dark--0);
+  padding: 5px;
+  gap: 5px;
+  border-radius: 5px;
+  transform: translateY(50px);
+  opacity: 0;
+  animation: fromY 1s ease forwards;
+}
+
+.button:not(:last-child) {
+  border-right: none;
+}
+
+.tabButton {
+  padding: 10px 20px;
+  background: var(--color-dark--0);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.tabButton:hover:not(:disabled) {
+  transform: scale(1.05);
+}
+
+.tabButton:active:not(:disabled) {
+  opacity: 0.75;
+}
+
+.selected {
+  background: var(--color-dark--2);
+}
+
+.tabButton:disabled {
+  opacity: 0.2;
+  cursor: auto;
+}
+
+@keyframes fromY {
+  to {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}

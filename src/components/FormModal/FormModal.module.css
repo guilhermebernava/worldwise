@@ -5,7 +5,7 @@
   width: 100%;
   min-height: 100vh;
   z-index: 9999;
-  background: rgba(0, 0, 0, 0.95);
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -42,6 +42,9 @@
   flex-direction: column;
   gap: 25px;
   background: var(--color-dark--0);
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fromY 1s ease forwards;
 }
 
 .closeButton {
@@ -70,5 +73,12 @@
   .form {
     width: 100%;
     min-height: 100vh;
+  }
+}
+
+@keyframes fromY {
+  to {
+    transform: translateY(0px);
+    opacity: 1;
   }
 }

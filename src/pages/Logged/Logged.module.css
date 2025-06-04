@@ -16,12 +16,6 @@
   background-color: #262f31;
 }
 
-.container div {
-  transform: translateY(50px);
-  opacity: 0;
-  animation: fromX 1s ease forwards;
-}
-
 .map {
   position: relative;
   width: 70%;

@@ -32,7 +32,7 @@ export function LoginProvider({ children }) {
 
   const redirectToLoggedApp = () => {
     if (user != null) {
-      navigate("/app/logged");
+      navigate("/app");
       return;
     }
     navigate("/login");

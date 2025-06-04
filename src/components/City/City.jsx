@@ -40,7 +40,7 @@ function City() {
         isLink={true}
       />
 
-      <button onClick={() => navite("/app/logged")} className={styles.button}>
+      <button onClick={() => navite("/app")} className={styles.button}>
         BACK
       </button>
     </div>

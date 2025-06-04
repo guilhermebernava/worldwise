@@ -44,7 +44,7 @@ function FormModal() {
     });
 
     dispatch({ type: "reset" });
-    navigate("/app/logged");
+    navigate("/app");
   };
 
   return (
@@ -56,7 +56,7 @@ function FormModal() {
             e.preventDefault();
             e.stopPropagation();
             dispatch({ type: "reset" });
-            navigate("/app/logged");
+            navigate("/app");
           }}
         >
           X

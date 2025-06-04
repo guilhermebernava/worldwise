@@ -36,7 +36,7 @@ function Logged() {
   const location = useLocation();
 
   const modalDataRef = useRef(null);
-  const { cities, countries, status } = useCities();
+  const { status } = useCities();
   const showModal = location.pathname.includes("/formModal");
 
   useEffect(() => {
@@ -58,15 +58,13 @@ function Logged() {
         <ErrorPage error={"Error while fecthing data from API"} />
       )}
       {status === "loading" && <Spinner />}
+      {showModal && <Outlet />}
+
       {status === "ready" && (
         <div className={styles.main}>
-          {showModal && <Outlet />}
           <div className={styles.container}>
             <Logo />
-            <Tab
-              buttons={["Cities", "Countries"]}
-              content={[cities, countries]}
-            />
+            <Tab />
           </div>
           <div className={styles.map}>
             <Map

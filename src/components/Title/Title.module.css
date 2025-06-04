@@ -4,14 +4,24 @@
   text-align: center;
 }
 
+.small {
+  font-size: 2.5rem;
+}
+
 @media (max-width: 950px) {
   .title {
     font-size: 3rem;
+  }
+  .small {
+    font-size: 2rem;
   }
 }
 
 @media (max-width: 650px) {
   .title {
     font-size: 2.5rem;
+  }
+  .small {
+    font-size: 1.75rem;
   }
 }

@@ -1,73 +1,13 @@
-import { useState } from "react";
-import styles from "./Tab.module.css";
-import FlagEmoji from "../FlagEmoji/FlagEmoji";
-import { useCities } from "../../context/CitiesContext";
-import { Outlet, useNavigate, useLocation } from "react-router-dom";
-import { formatDateToMMDDYYYY } from "../../helpers/DateHelper";
+import { Outlet } from "react-router-dom";
+import TabButtons from "../TabButtons/TabButtons";
 
-function Tab({ buttons = [], content = [] }) {
-  const { deleteCity } = useCities();
-  const navigate = useNavigate();
-  const location = useLocation();
-  const showOutlet = location.pathname.includes("/city");
-
-  if (buttons.lenght != content.lenght)
-    throw new Error("BUTTONS and CONTENT MUST HAVE THE SAME SIZE");
-
-  const [tab, setTab] = useState(0);
-
+function Tab() {
   return (
     <>
-      <div className={styles.tabs}>
-        <div className={styles.buttons}>
-          {buttons.map((button, index) => (
-            <button
-              key={index}
-              className={`${styles.tabButton} ${
-                tab === index ? styles.selected : ""
-              } ${index === 0 ? styles.first : ""} ${
-                index === buttons.length - 1 ? styles.last : ""
-              }`}
-              onClick={() => setTab(index)}
-              disabled={showOutlet}
-            >
-              {button.toUpperCase()}
-            </button>
-          ))}
-        </div>
+      <div>
+        <TabButtons />
       </div>
-      <div className={styles.tabContent}>
-        {showOutlet && <Outlet />}
-        {content.length > 0 &&
-          !showOutlet &&
-          content[tab].map((content, index) => (
-            <div
-              className={styles.content}
-              key={index}
-              onClick={() => navigate(`city/${content.id}`)}
-            >
-              {content.emoji != null && (
-                <FlagEmoji countryCode={content.emoji} />
-              )}
-
-              <span className={styles.contentText}>{content.name}</span>
-              <section className={styles.contentEnd}>
-                <span className={styles.contentText}>
-                  ({formatDateToMMDDYYYY(content.date)})
-                </span>
-                <button
-                  className={styles.closeButton}
-                  onClick={(e) => {
-                    deleteCity(content.id);
-                    e.stopPropagation();
-                  }}
-                >
-                  X
-                </button>
-              </section>
-            </div>
-          ))}
-      </div>
+      <Outlet />
     </>
   );
 }

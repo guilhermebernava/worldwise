@@ -24,7 +24,7 @@ function PageNav() {
           </li>
           <li className={styles.navItem}>
             {user != null && (
-              <NavLink to="/app/logged">
+              <NavLink to="/app">
                 <UserButton isLittle={true} />
               </NavLink>
             )}
