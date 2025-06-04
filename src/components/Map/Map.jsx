@@ -1,13 +1,17 @@
 import styles from "./Map.module.css";
 import "leaflet/dist/leaflet.css";
 
+//coisas que ja existe para o REACT do leaflet
 import {
   MapContainer,
   TileLayer,
   Marker,
   Popup,
+  useMap,
   useMapEvents,
 } from "react-leaflet";
+import { useEffect } from "react";
+//precisa importar O CSS para leaflet funcionar
 import "leaflet/dist/leaflet.css";
 
 import L from "leaflet";
@@ -23,20 +27,18 @@ L.Icon.Default.mergeOptions({
 });
 
 function Map({ onSelectedPosition }) {
-  const { cities, lastCity } = useCities();
+  const { cities, position } = useCities();
 
-  function handleAddMarker(latlng) {
+  function onAddMarker(latlng) {
+    //estou passando esse valor para function, para o pai desse componente
+    //tenha acesso ao latlng;
     onSelectedPosition(latlng);
   }
 
-  let lastCityPosition;
-  if (lastCity == null) lastCityPosition = [40, 0];
-  else lastCityPosition = [lastCity.position.lat, lastCity.position.lng];
-
   return (
     <MapContainer
-      center={lastCityPosition}
-      zoom={6}
+      center={position}
+      zoom={12}
       scrollWheelZoom={true}
       className={styles.wordMap}
     >
@@ -56,18 +58,32 @@ function Map({ onSelectedPosition }) {
           </Popup>
         </Marker>
       ))}
-      <AddMarkerOnClick onAddMarker={handleAddMarker} />
+      <AddMarkerOnClick onAddMarker={onAddMarker} />
+      <ChangeCenter position={position} />
     </MapContainer>
   );
 }
 
 function AddMarkerOnClick({ onAddMarker }) {
+  //toda vez que clicar no mapa, ele vai chamar o metodo onAddMarker
   useMapEvents({
     click(e) {
       if (e.originalEvent) e.originalEvent.preventDefault();
       onAddMarker(e.latlng);
     },
   });
+  return null;
+}
+
+function ChangeCenter({ position }) {
+  //pega o mapa que esta sendo mostrado
+  const map = useMap();
+
+  useEffect(() => {
+    //altera a posicao do mapa sempre que position alterar.
+    map.setView(position);
+  }, [position, map]);
+
   return null;
 }
 

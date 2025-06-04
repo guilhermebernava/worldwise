@@ -97,7 +97,7 @@ function FormModal() {
         />
         {status === "error" && <Error text="Error in fetching data from API" />}
         <Button
-          text={`${status === "loading" ? "loading" : "Add City"}`}
+          text={`${status === "loading" ? "Loading" : "Add City"}`}
           bigButton={true}
           onClick={async () => {
             await handleAddCity();

@@ -5,7 +5,10 @@ import { useState } from "react";
 function TabButtons() {
   const navigte = useNavigate();
   const location = useLocation();
-  const [selected, setSelected] = useState(0);
+  const [selected, setSelected] = useState(() => {
+    const isCities = location.pathname.includes("cities");
+    return isCities ? 0 : 1;
+  });
   const disableButton = location.pathname.includes("/city");
 
   return (

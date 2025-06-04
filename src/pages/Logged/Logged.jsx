@@ -6,15 +6,12 @@ import styles from "./Logged.module.css";
 import { useEffect, useRef } from "react";
 import "leaflet/dist/leaflet.css";
 
-import "leaflet/dist/leaflet.css";
-
 import L from "leaflet";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
 import { useCities } from "../../context/CitiesContext";
 import { useGeolocation } from "../../hooks/useGeolocation";
 import Map from "../../components/Map/Map";
-import Spinner from "../../components/Spinner/Spinner";
 import ErrorPage from "../Error/ErrorPage";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
@@ -58,40 +55,36 @@ function Logged() {
       {status === "error" && (
         <ErrorPage error={"Error while fecthing data from API"} />
       )}
-      {status === "loading" && <Spinner />}
       {showModal && <Outlet />}
-
-      {status === "ready" && (
-        <div className={styles.main}>
-          <div className={styles.container}>
-            <Logo />
-            <Tab />
+      <div className={styles.main}>
+        <div className={styles.container}>
+          <Logo />
+          <Tab />
+        </div>
+        <div className={styles.map}>
+          <Map
+            onSelectedPosition={(pos) => {
+              modalDataRef.current = { lat: pos.lat, lng: pos.lng };
+              navigate(
+                `formModal/${modalDataRef.current.lat}/${modalDataRef.current.lng}`,
+                { state: { background: location } }
+              );
+            }}
+          />
+          <div className={styles.userButton}>
+            <UserButton />
           </div>
-          <div className={styles.map}>
-            <Map
-              onSelectedPosition={(pos) => {
-                modalDataRef.current = { lat: pos.lat, lng: pos.lng };
-                navigate(
-                  `formModal/${modalDataRef.current.lat}/${modalDataRef.current.lng}`,
-                  { state: { background: location } }
-                );
+          <div className={styles.bottom}>
+            <Button
+              disable={isLoadingPosition}
+              text={isLoadingPosition ? "Loading..." : "Use your position"}
+              onClick={() => {
+                getPosition();
               }}
             />
-            <div className={styles.userButton}>
-              <UserButton />
-            </div>
-            <div className={styles.bottom}>
-              <Button
-                disable={isLoadingPosition}
-                text={isLoadingPosition ? "Loading..." : "Use your position"}
-                onClick={() => {
-                  getPosition();
-                }}
-              />
-            </div>
           </div>
         </div>
-      )}
+      </div>
     </>
   );
 }

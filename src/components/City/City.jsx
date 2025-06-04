@@ -4,6 +4,7 @@ import styles from "./City.module.css";
 import { useNavigate, useParams } from "react-router-dom";
 import FlagEmoji from "../FlagEmoji/FlagEmoji";
 import { formatDateToMMDDYYYY } from "../../helpers/DateHelper";
+import Spinner from "../Spinner/Spinner";
 
 function City() {
   const { getCityById } = useCities();
@@ -21,31 +22,33 @@ function City() {
   }
 
   useEffect(() => {
-    setCity(getCityById(id));
-    console.log("teste " + city);
+    setTimeout(() => setCity(getCityById(id)), 2500);
   }, [getCityById, id]);
 
-  if (!city) return <p>Carregando...</p>;
-
   return (
-    <div className={styles.container}>
-      <Text title={"City"} text={city.name} emoji={city.emoji} />
+    <>
+      {city == null && <Spinner />}
+      {city != null && (
+        <div className={styles.container}>
+          <Text title={"City"} text={city.name} emoji={city.emoji} />
 
-      <Text
-        title={`You went to ${city.name} on`}
-        text={formatDateToMMDDYYYY(city.date)}
-      />
-      <Text title={"Your Notes"} text={city.notes} />
-      <Text
-        title={"Learn More"}
-        text={getWikipediaUrl(city.name)}
-        isLink={true}
-      />
+          <Text
+            title={`You went to ${city.name} on`}
+            text={formatDateToMMDDYYYY(city.date)}
+          />
+          <Text title={"Your Notes"} text={city.notes} />
+          <Text
+            title={"Learn More"}
+            text={getWikipediaUrl(city.name)}
+            isLink={true}
+          />
 
-      <button onClick={() => navite("/app")} className={styles.button}>
-        BACK
-      </button>
-    </div>
+          <button onClick={() => navite("/app")} className={styles.button}>
+            BACK
+          </button>
+        </div>
+      )}
+    </>
   );
 }
 

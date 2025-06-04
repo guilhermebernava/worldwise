@@ -75,6 +75,6 @@ export function LoginProvider({ children }) {
 export function useLogin() {
   const context = useContext(LoginContext);
   if (context === undefined)
-    throw new Error("LoginContext was used outside of the QuizProvider");
+    throw new Error("LoginContext was used outside of the CitiesProvider");
   return context;
 }

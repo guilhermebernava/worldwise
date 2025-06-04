@@ -20,6 +20,10 @@ const CitiesContext = createContext();
 const initialState = {
   cities: [],
   status: "loading",
+  position: {
+    lat: 0,
+    lng: 0,
+  },
   error: null,
 };
 
@@ -32,25 +36,35 @@ function reducer(state, action) {
     case "loading":
       return { ...state, status: "loading" };
     case "cities/loaded":
-      return { ...state, status: "ready", cities: action.payload };
+      return {
+        ...state,
+        status: "ready",
+        cities: action.payload,
+        position: action.payload[0].position,
+      };
     case "cities/added":
       return {
         ...state,
         status: "ready",
         cities: [...state.cities, action.payload],
+        position: action.payload.position,
       };
     case "cities/delete":
       const newCities = state.cities.filter(
         (city) => city.id !== action.payload
       );
       return { ...state, cities: [...newCities] };
+    case "ready":
+      return { ...state, status: "ready" };
+    case "setPosition":
+      return { ...state, position: action.payload };
     default:
       return { ...state };
   }
 }
 
 export function CitiesProvider({ children }) {
-  const [{ cities, status, error }, dispatch] = useReducer(
+  const [{ cities, status, error, position }, dispatch] = useReducer(
     reducer,
     initialState
   );
@@ -81,7 +95,7 @@ export function CitiesProvider({ children }) {
 
     setTimeout(() => {
       fetchCities();
-    }, 2500);
+    }, 5000);
   }, []);
 
   const getCityInfo = useCallback(async (lat, lng) => {
@@ -142,14 +156,24 @@ export function CitiesProvider({ children }) {
     dispatch({ type: "cities/delete", payload: id });
   };
 
-  const getCityById = (id) => {
-    debugger;
-    const city = cities.filter((city) => city.id === Number(id));
+  const getCityById = useCallback(
+    (id) => {
+      dispatch({ type: "loading" });
 
-    if (city != null) return city[0];
+      const list = cities.filter((city) => city.id === Number(id));
 
-    throw new Error("Not found any city with this ID");
-  };
+      if (list.length > 0) {
+        dispatch({ type: "ready" });
+        dispatch({ type: "setPosition", payload: list[0].position });
+
+        return list[0];
+      } else {
+        throw new Error("Not found any city with this ID");
+      }
+    },
+
+    [cities]
+  );
 
   return (
     <CitiesContext.Provider
@@ -157,7 +181,7 @@ export function CitiesProvider({ children }) {
         cities,
         status,
         error,
-        lastCity: cities[cities.length - 1],
+        position,
         getCityInfo,
         addCity,
         deleteCity,
@@ -172,6 +196,6 @@ export function CitiesProvider({ children }) {
 export function useCities() {
   const context = useContext(CitiesContext);
   if (context === undefined)
-    throw new Error("CitiesContext was used outside of the QuizProvider");
+    throw new Error("CitiesContext was used outside of the CitiesProvider");
   return context;
 }
