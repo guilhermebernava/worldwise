@@ -10,7 +10,7 @@ import {
   useMap,
   useMapEvents,
 } from "react-leaflet";
-import { useEffect } from "react";
+import { useEffect, memo, useCallback } from "react";
 //precisa importar O CSS para leaflet funcionar
 import "leaflet/dist/leaflet.css";
 
@@ -26,14 +26,14 @@ L.Icon.Default.mergeOptions({
   shadowUrl: markerShadow,
 });
 
-function Map({ onSelectedPosition }) {
+const Map = memo(function Map({ onSelectedPosition }) {
   const { cities, position } = useCities();
 
-  function onAddMarker(latlng) {
+  const onAddMarker = useCallback(function onAddMarker(latlng) {
     //estou passando esse valor para function, para o pai desse componente
     //tenha acesso ao latlng;
     onSelectedPosition(latlng);
-  }
+  }, []);
 
   return (
     <MapContainer
@@ -62,9 +62,9 @@ function Map({ onSelectedPosition }) {
       <ChangeCenter position={position} />
     </MapContainer>
   );
-}
+});
 
-function AddMarkerOnClick({ onAddMarker }) {
+const AddMarkerOnClick = memo(function AddMarkerOnClick({ onAddMarker }) {
   //toda vez que clicar no mapa, ele vai chamar o metodo onAddMarker
   useMapEvents({
     click(e) {
@@ -73,9 +73,9 @@ function AddMarkerOnClick({ onAddMarker }) {
     },
   });
   return null;
-}
+});
 
-function ChangeCenter({ position }) {
+const ChangeCenter = memo(function ChangeCenter({ position }) {
   //pega o mapa que esta sendo mostrado
   const map = useMap();
 
@@ -85,6 +85,6 @@ function ChangeCenter({ position }) {
   }, [position, map]);
 
   return null;
-}
+});
 
 export default Map;

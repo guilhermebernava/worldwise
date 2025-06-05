@@ -1,7 +1,8 @@
 import { Outlet } from "react-router-dom";
 import TabButtons from "../TabButtons/TabButtons";
+import { memo } from "react";
 
-function Tab() {
+const Tab = memo(function Tab() {
   return (
     <>
       <div>
@@ -10,6 +11,6 @@ function Tab() {
       <Outlet />
     </>
   );
-}
+});
 
 export default Tab;

@@ -3,7 +3,7 @@ import Logo from "../../components/Logo/Logo";
 import Tab from "../../components/Tab/Tab";
 import UserButton from "../../components/UserButton/UserButton";
 import styles from "./Logged.module.css";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useCallback } from "react";
 import "leaflet/dist/leaflet.css";
 
 import L from "leaflet";
@@ -44,11 +44,17 @@ function Logged() {
       };
 
       navigate(
-        `formModal/${modalDataRef.current.lat}/${modalDataRef.current.lng}`,
-        { state: { background: location } }
+        `formModal/${modalDataRef.current.lat}/${modalDataRef.current.lng}`
       );
     }
   }, [geolocationPosition]);
+
+  const handleMap = useCallback((pos) => {
+    modalDataRef.current = { lat: pos.lat, lng: pos.lng };
+    navigate(
+      `formModal/${modalDataRef.current.lat}/${modalDataRef.current.lng}`
+    );
+  }, []);
 
   return (
     <>
@@ -63,15 +69,7 @@ function Logged() {
           <Tab />
         </div>
         <div className={styles.map}>
-          <Map
-            onSelectedPosition={(pos) => {
-              modalDataRef.current = { lat: pos.lat, lng: pos.lng };
-              navigate(
-                `formModal/${modalDataRef.current.lat}/${modalDataRef.current.lng}`,
-                { state: { background: location } }
-              );
-            }}
-          />
+          <Map onSelectedPosition={handleMap} />
           <div className={styles.userButton}>
             <UserButton />
           </div>

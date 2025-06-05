@@ -35,6 +35,19 @@
         "lng": 13.376933665713324
       },
       "id": "98443197"
+    },
+    {
+      "id": 1749148681705,
+      "name": "asdasdasd",
+      "country": "Portugal",
+      "emoji": "🇵🇹",
+      "position": {
+        "lat": 38.70667813760075,
+        "lng": -9.2021391673722
+      },
+      "cityName": "asdasdasd",
+      "date": "2025-06-25",
+      "notes": "asdasdasd"
     }
   ]
 }

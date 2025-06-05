@@ -4,6 +4,7 @@ import {
   useEffect,
   useReducer,
   useCallback,
+  useMemo,
 } from "react";
 
 const BASE_URL = "http://localhost:9000";
@@ -141,7 +142,7 @@ export function CitiesProvider({ children }) {
     }
   }, []);
 
-  const addCity = async (data) => {
+  const addCity = useCallback(async (data) => {
     dispatch({ type: "loading" });
 
     await setTimeout(async () => {
@@ -177,10 +178,9 @@ export function CitiesProvider({ children }) {
         }
       }
     }, 2000);
-  };
+  }, []);
 
-  const deleteCity = async (id) => {
-    debugger;
+  const deleteCity = useCallback(async (id) => {
     dispatch({ type: "loading" });
     try {
       const res = await fetch(`${BASE_URL}/cities/${Number(id)}`, {
@@ -200,13 +200,13 @@ export function CitiesProvider({ children }) {
 
       dispatch({ type: "cities/delete", payload: id });
     } catch {}
-  };
+  }, []);
 
   const getCityById = useCallback(
     (id) => {
       dispatch({ type: "loading" });
 
-      const list = cities.filter((city) => city.id === Number(id));
+      const list = cities.filter((city) => Number(city.id) === Number(id));
 
       if (list.length > 0) {
         dispatch({ type: "ready" });
@@ -214,7 +214,10 @@ export function CitiesProvider({ children }) {
 
         return list[0];
       } else {
-        throw new Error("Not found any city with this ID");
+        dispatch({
+          type: "error",
+          payload: "Not found any city with this ID",
+        });
       }
     },
 
@@ -225,20 +228,22 @@ export function CitiesProvider({ children }) {
     dispatch({ type: "ready" });
   };
 
+  const value = useMemo(() => {
+    return {
+      cities,
+      status,
+      error,
+      position,
+      getCityInfo,
+      addCity,
+      deleteCity,
+      getCityById,
+      resetError,
+    };
+  }, [cities, status, error, position]);
+
   return (
-    <CitiesContext.Provider
-      value={{
-        cities,
-        status,
-        error,
-        position,
-        getCityInfo,
-        addCity,
-        deleteCity,
-        getCityById,
-        resetError,
-      }}
-    >
+    <CitiesContext.Provider value={{ ...value }}>
       {children}
     </CitiesContext.Provider>
   );

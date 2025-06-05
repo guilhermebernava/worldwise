@@ -1,7 +1,8 @@
 import { useLogin } from "../context/LoginContext";
 import { Navigate } from "react-router-dom";
+import { memo } from "react";
 
-const ProtectedRoute = ({ children }) => {
+const ProtectedRoute = memo(({ children }) => {
   const { user } = useLogin();
 
   if (!user) {
@@ -9,6 +10,6 @@ const ProtectedRoute = ({ children }) => {
   }
 
   return children;
-};
+});
 
 export default ProtectedRoute;

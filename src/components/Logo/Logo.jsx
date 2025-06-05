@@ -1,7 +1,8 @@
 import styles from "./Logo.module.css";
 import { NavLink } from "react-router-dom";
+import { memo } from "react";
 
-function Logo() {
+const Logo = memo(function Logo() {
   return (
     <NavLink to="/">
       <picture>
@@ -18,6 +19,6 @@ function Logo() {
       </picture>
     </NavLink>
   );
-}
+});
 
 export default Logo;
