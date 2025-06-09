@@ -1,12 +1,95 @@
-# React + Vite
+# 🌍 WorldWise
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**WorldWise** é uma aplicação web construída com **React** e **Vite**, que permite selecionar cidades em um mapa, adicionar comentários e registrar datas de visita. Ideal para registrar e revisitar suas memórias de viagem pelo mundo!
+Conta também com um sistema simples de **login fictício** para simular a autenticação de usuários.
 
-Currently, two official plugins are available:
+## 🚀 Tecnologias Utilizadas
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+* [React 19](https://react.dev/)
+* [Vite](https://vitejs.dev/)
+* [React Router DOM v7](https://reactrouter.com/)
+* [Leaflet](https://leafletjs.com/) & [React-Leaflet](https://react-leaflet.js.org/)
+* [JSON Server](https://github.com/typicode/json-server) (para simular uma API REST)
+* [ESLint](https://eslint.org/) (para linting de código)
 
-## Expanding the ESLint configuration
+## 📸 Funcionalidades
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+* 🗺️ Visualização de mapa interativo com Leaflet
+* 📍 Seleção de cidades diretamente no mapa
+* 📝 Adição de comentários personalizados para cada cidade
+* 📅 Registro da data da visita
+* 🔐 Login fictício para simular autenticação
+
+## 📦 Instalação
+
+```bash
+# Clone o repositório
+git clone https://github.com/seu-usuario/worldwise.git
+cd worldwise
+
+# Instale as dependências
+npm install
+```
+
+## 🧪 Modo de Desenvolvimento
+
+Você pode iniciar o frontend e o backend falso (JSON Server) ao mesmo tempo com o comando:
+
+```bash
+npm run dev
+```
+
+Se preferir iniciar apenas o servidor da API fake:
+
+```bash
+npm run server
+```
+
+## 🏗️ Build para Produção
+
+```bash
+npm run build
+```
+
+Para visualizar o build:
+
+```bash
+npm run preview
+```
+
+## 📁 Estrutura Básica
+
+```
+src/
+├── components/       # Componentes reutilizáveis
+├── data/             # Base de dados local (JSON Server)
+│   └── cities.json
+├── pages/            # Páginas principais da aplicação
+├── App.jsx           # Componente principal
+├── main.jsx          # Ponto de entrada da aplicação
+```
+
+## 🔒 Login Fictício
+
+O sistema de login é apenas uma simulação e **não possui autenticação real**. Serve apenas para demonstrar rotas protegidas e experiência do usuário logado.
+
+## 🧹 Lint
+
+Para verificar o lint do projeto:
+
+```bash
+npm run lint
+```
+
+## 📌 Observações
+
+* A aplicação utiliza **JSON Server** para simular um backend. Os dados de cidades são persistidos no arquivo `src/data/cities.json`.
+* O mapa é renderizado utilizando o Leaflet, com pontos de marcação representando as cidades selecionadas.
+
+## 📜 Licença
+
+Este projeto é livre para fins educacionais e pessoais. Sem licença comercial atribuída.
+
+---
+
+Se quiser, posso adicionar badges, instruções de deploy ou até um gif demonstrativo. Deseja incluir algo mais?
