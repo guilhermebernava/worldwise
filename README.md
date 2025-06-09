@@ -85,11 +85,3 @@ npm run lint
 
 * A aplicação utiliza **JSON Server** para simular um backend. Os dados de cidades são persistidos no arquivo `src/data/cities.json`.
 * O mapa é renderizado utilizando o Leaflet, com pontos de marcação representando as cidades selecionadas.
-
-## 📜 Licença
-
-Este projeto é livre para fins educacionais e pessoais. Sem licença comercial atribuída.
-
----
-
-Se quiser, posso adicionar badges, instruções de deploy ou até um gif demonstrativo. Deseja incluir algo mais?
